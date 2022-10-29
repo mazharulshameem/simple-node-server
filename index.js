@@ -28,9 +28,16 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const userCollection = client.db("simpleNode").collection("users");
-    const user = { name: "Barsha Jalil", email: "barsha@example.com" };
+    // const user = { name: "Barsha Jalil", email: "barsha@example.com" };
     // const result = await userCollection.insertOne(user);
     // console.log(result);
+
+    app.get("/users", async (req, res) => {
+      const cursor = userCollection.find({});
+      const users = await cursor.toArray();
+      res.send(users);
+    });
+
     app.post("/users", async (req, res) => {
       console.log("Post Api called");
       const user = req.body;
@@ -47,17 +54,17 @@ async function run() {
 }
 run().catch((error) => console.log(error));
 
-app.get("/users", (req, res) => {
-  if (req.query.name) {
-    const search = req.query.name;
-    const filtered = users.filter(
-      (usr) => usr.name.toLowerCase().indexOf(search) >= 0
-    );
-    res.send(filtered);
-  } else {
-    res.send(users);
-  }
-});
+// app.get("/users", (req, res) => {
+//   if (req.query.name) {
+//     const search = req.query.name;
+//     const filtered = users.filter(
+//       (usr) => usr.name.toLowerCase().indexOf(search) >= 0
+//     );
+//     res.send(filtered);
+//   } else {
+//     res.send(users);
+//   }
+// });
 
 // app.post("/users", (req, res) => {
 //   console.log("Post Api called");
