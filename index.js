@@ -14,7 +14,15 @@ const users = [
   { id: 3, name: "Lohn", email: " Lhon@gmail.com" },
 ];
 app.get("/users", (req, res) => {
-  res.send(users);
+  if (req.query.name) {
+    const search = req.query.name;
+    const filtered = users.filter(
+      (usr) => usr.name.toLowerCase().indexOf(search) >= 0
+    );
+    res.send(filtered);
+  } else {
+    res.send(users);
+  }
 });
 app.post("/users", (req, res) => {
   console.log("Post Api called");
